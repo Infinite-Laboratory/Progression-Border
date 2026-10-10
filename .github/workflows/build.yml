@@ -1,0 +1,21 @@
+name: build
+
+on:
+  push:
+    branches: [ main, "rework/**" ]
+  pull_request:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Setup JDK 25
+        uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: '25'
+      # Resolves SingularityLib from the PUBLIC token-free registry
+      # (raw.githubusercontent.com/Pinont/singularity-maven). No secrets needed.
+      - name: Build
+        run: mvn -B -U clean package
